@@ -47,7 +47,6 @@ mod tests {
         assert_eq!(&buf[0..3], b"te_");
         // Check that the suffix is valid base62 characters
         for &byte in &buf[3..] {
-            // println!("Byte: {}", byte);
             assert!(byte.is_ascii_alphanumeric());
         }
     }

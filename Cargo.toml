@@ -14,10 +14,16 @@ sqlx = { version = "0.8.6", optional = true, features = ["postgres"] }
 thiserror = "2.0.12"
 puid_macros = { path = "macros", version = "0.1.0" }
 
+[dev-dependencies]
+serde_json = "1.0.140"
+serde = "1.0.219"
+tokio = { version = "1.44", features = ["full"] }
+sqlx = { version = "0.8.6", features = ["postgres", "runtime-tokio"] }
+
 [features]
 default = []
-serde = ["dep:serde"]
-postgres = ["dep:sqlx"]
+serde = ["dep:serde", "puid_macros/serde"]
+postgres = ["dep:sqlx", "puid_macros/postgres"]
 
 [workspace]
 members = ["macros"]
