@@ -1,0 +1,20 @@
+[package]
+name = "puid"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+base62 = "2.2.1"
+rand = "0.9.1"
+serde = { version = "1.0.219", optional = true }
+sqlx = { version = "0.8.6", optional = true, features = ["postgres"] }
+thiserror = "2.0.12"
+puid_macros = { path = "macros", version = "0.1.0" }
+
+[features]
+default = []
+serde = ["dep:serde"]
+postgres = ["dep:sqlx"]
+
+[workspace]
+members = ["macros"]
