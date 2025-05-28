@@ -94,14 +94,14 @@ fn impl_puid(Input { name, prefix }: Input) -> Result<TokenStream> {
         quote! {}
     };
 
+    let snake_case_name = {
+        let mut name_str = name.to_string();
+        for c in 'A'..='Z' {
+            name_str = name_str.replace(c, &format!("_{}", c.to_ascii_lowercase()));
+        }
+        name_str.trim_start_matches('_').to_string()
+    };
     let postgres = if cfg!(feature = "postgres") {
-        let snake_case_name = {
-            let mut name_str = name.to_string();
-            for c in 'A'..='Z' {
-                name_str = name_str.replace(c, &format!("_{}", c.to_ascii_lowercase()));
-            }
-            name_str.trim_start_matches('_').to_string()
-        };
         quote! {
             impl ::sqlx::Type<::sqlx::Postgres> for #name {
                 fn type_info() -> ::sqlx::postgres::PgTypeInfo {
@@ -130,6 +130,10 @@ fn impl_puid(Input { name, prefix }: Input) -> Result<TokenStream> {
     } else {
         quote! {}
     };
+    let create_domain = format!(
+        "CREATE DOMAIN {snake_case_name} AS VARCHAR({len}) CHECK (VALUE ~ \
+         '^{prefix}_[0-9A-Za-z]{{22}}$');",
+    );
 
     Ok(quote! {
         #[derive(Copy, Clone, PartialEq, Eq, Hash, PartialOrd, Ord)]
@@ -149,6 +153,10 @@ fn impl_puid(Input { name, prefix }: Input) -> Result<TokenStream> {
                 unsafe {
                     ::std::str::from_utf8_unchecked(&self.0)
                 }
+            }
+
+            pub fn create_domain() -> &'static str {
+                #create_domain
             }
         }
 
