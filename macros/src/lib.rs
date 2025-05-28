@@ -26,11 +26,15 @@ impl Parse for Input {
 }
 
 #[proc_macro]
-/// Generates a type for a Prefixed Universally Unique Identifier (PUID).
+/// Generates a type for a Prefixed Unique Identifier (PUID).
 ///
 /// # Example:
 /// ```
 /// puid!(UserId = "usr");
+/// let user_id = UserId::new();
+/// assert_eq!(user_id.as_str().len(), 26); // "usr_" + _ + 22 base62 characters
+/// assert!(user_id.as_str().starts_with("usr_"));
+/// ```
 pub fn puid(input: proc_macro::TokenStream) -> proc_macro::TokenStream {
     impl_puid(parse_macro_input!(input as Input))
         .unwrap()

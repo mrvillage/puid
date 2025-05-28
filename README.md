@@ -1,4 +1,4 @@
-# Prefixed Universally Unique Identifier (PUID) Generator
+# Prefixed Unique Identifier (PUID) Generator
 
 ## Overview
 
