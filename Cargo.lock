@@ -833,7 +833,7 @@ dependencies = [
 
 [[package]]
 name = "puid"
-version = "0.1.0"
+version = "0.1.1"
 dependencies = [
  "base62",
  "puid_macros",
@@ -847,7 +847,7 @@ dependencies = [
 
 [[package]]
 name = "puid_macros"
-version = "0.1.0"
+version = "0.1.1"
 dependencies = [
  "proc-macro2",
  "quote",
