@@ -52,17 +52,17 @@ fn test_sqlx() {
             .await
             .unwrap();
 
-        let _ = sqlx::query!(
+        let _ = sqlx::query(
             "CREATE DOMAIN test_id AS VARCHAR(27)
             CHECK (
               VALUE ~ '^test_[0-9A-Za-z]{22}$'
-            );"
+            );",
         )
         .execute(&mut conn)
         .await
         .unwrap();
 
-        sqlx::query!(
+        sqlx::query(
             "CREATE TABLE IF NOT EXISTS test (
                 id test_id PRIMARY KEY,
                 value integer NOT NULL
@@ -72,13 +72,11 @@ fn test_sqlx() {
         .await
         .unwrap();
 
-        sqlx::query!(
-            "INSERT INTO test (id, value) VALUES ($1, $2)",
-            user_id as TestId,
-            42
-        )
-        .execute(&mut conn)
-        .await
-        .unwrap();
+        sqlx::query("INSERT INTO test (id, value) VALUES ($1, $2)")
+            .bind(user_id)
+            .bind(42)
+            .execute(&mut conn)
+            .await
+            .unwrap();
     });
 }
