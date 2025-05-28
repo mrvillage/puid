@@ -49,7 +49,7 @@ fn impl_puid(Input { name, prefix }: Input) -> Result<TokenStream> {
     buf.resize(len, b'0');
 
     let serde = if cfg!(feature = "serde") {
-        let visitor_ident = syn::Ident::new(&format!("{}SerdeVisitor", name), name.span());
+        let visitor_ident = syn::Ident::new(&format!("{name}SerdeVisitor"), name.span());
         quote! {
             impl ::serde::Serialize for #name {
                 fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
