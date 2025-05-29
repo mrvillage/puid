@@ -131,7 +131,7 @@ fn impl_puid(Input { name, prefix }: Input) -> Result<TokenStream> {
         quote! {}
     };
     let create_domain = format!(
-        "CREATE DOMAIN {snake_case_name} AS VARCHAR({len}) CHECK (VALUE ~ \
+        "CREATE DOMAIN {snake_case_name} AS CHAR({len}) CHECK (VALUE ~ \
          '^{prefix}_[0-9A-Za-z]{{22}}$');",
     );
 

@@ -53,7 +53,7 @@ fn test_sqlx() {
             .unwrap();
 
         let _ = sqlx::query(
-            "CREATE DOMAIN test_id AS VARCHAR(27)
+            "CREATE DOMAIN test_id AS CHAR(27)
             CHECK (
               VALUE ~ '^test_[0-9A-Za-z]{22}$'
             );",
@@ -86,6 +86,6 @@ fn test_create_domain() {
     let domain_sql = TestId::create_domain();
     assert_eq!(
         domain_sql,
-        "CREATE DOMAIN test_id AS VARCHAR(27) CHECK (VALUE ~ '^test_[0-9A-Za-z]{22}$');"
+        "CREATE DOMAIN test_id AS CHAR(27) CHECK (VALUE ~ '^test_[0-9A-Za-z]{22}$');"
     );
 }
