@@ -109,7 +109,7 @@ fn impl_puid(Input { name, prefix }: Input) -> Result<TokenStream> {
                 }
 
                 fn compatible(ty: &::sqlx::postgres::PgTypeInfo) -> bool {
-                    ty == &::sqlx::postgres::PgTypeInfo::with_name("user_id")
+                    ty == &::sqlx::postgres::PgTypeInfo::with_name("user_id") || <&str as ::sqlx::Type<::sqlx::Postgres>>::compatible(ty)
                 }
             }
 
@@ -130,9 +130,31 @@ fn impl_puid(Input { name, prefix }: Input) -> Result<TokenStream> {
     } else {
         quote! {}
     };
-    let create_domain = format!(
-        "CREATE DOMAIN {snake_case_name} AS CHAR({len}) CHECK (VALUE ~ \
-         '^{prefix}_[0-9A-Za-z]{{22}}$');",
+
+    let sea_query = if cfg!(feature = "sea-query") {
+        quote! {
+            impl From<#name> for ::sea_query::Value {
+                fn from(value: #name) -> Self {
+                    ::sea_query::Value::String(Some(value.to_string().into()))
+                }
+            }
+
+            impl ::sea_query::value::Nullable for #name {
+                fn null() -> ::sea_query::Value {
+                    ::sea_query::Value::String(None)
+                }
+            }
+        }
+    } else {
+        quote! {}
+    };
+
+    let create_domain = LitStr::new(
+        &format!(
+            "CREATE DOMAIN {snake_case_name} AS CHAR({len}) CHECK (VALUE ~ \
+             '^{prefix}_[0-9A-Za-z]{{22}}$');",
+        ),
+        proc_macro2::Span::call_site(),
     );
 
     Ok(quote! {
@@ -157,6 +179,14 @@ fn impl_puid(Input { name, prefix }: Input) -> Result<TokenStream> {
 
             pub fn create_domain() -> &'static str {
                 #create_domain
+            }
+
+            pub fn nil() -> Self {
+                #name([#(#buf),*])
+            }
+
+            pub fn is_nil(&self) -> bool {
+                self.0 == [#(#buf),*]
             }
         }
 
@@ -201,8 +231,22 @@ fn impl_puid(Input { name, prefix }: Input) -> Result<TokenStream> {
             }
         }
 
+        impl From<&str> for #name {
+            fn from(s: &str) -> Self {
+                s.parse().expect("Invalid PUID string")
+            }
+        }
+
+        impl From<String> for #name {
+            fn from(s: String) -> Self {
+                s.parse().expect("Invalid PUID string")
+            }
+        }
+
         #serde
 
         #postgres
+
+        #sea_query
     })
 }

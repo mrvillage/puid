@@ -18,3 +18,4 @@ proc-macro = true
 default = []
 serde = []
 postgres = []
+sea-query = []

@@ -13,6 +13,7 @@ serde = { version = "1.0.219", optional = true }
 sqlx = { version = "0.8.6", optional = true, features = ["postgres"] }
 thiserror = "2.0.12"
 puid_macros = { path = "macros", version = "0.1.1" }
+sea-query = { version = "0.32.6", optional = true }
 
 [dev-dependencies]
 serde_json = "1.0.140"
@@ -24,6 +25,7 @@ sqlx = { version = "0.8.6", features = ["postgres", "runtime-tokio"] }
 default = []
 serde = ["dep:serde", "puid_macros/serde"]
 postgres = ["dep:sqlx", "puid_macros/postgres"]
+sea-query = ["dep:sea-query", "puid_macros/sea-query"]
 
 [workspace]
 members = ["macros"]
