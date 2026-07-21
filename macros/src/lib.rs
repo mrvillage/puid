@@ -2,14 +2,11 @@ use proc_macro2::TokenStream;
 use quote::quote;
 use syn::{
     parse::{Parse, ParseStream},
-    parse_macro_input,
-    Ident,
-    LitStr,
-    Result,
+    parse_macro_input, Ident, LitStr, Result,
 };
 
 struct Input {
-    name:   syn::Ident,
+    name: syn::Ident,
     prefix: String,
 }
 
@@ -109,7 +106,7 @@ fn impl_puid(Input { name, prefix }: Input) -> Result<TokenStream> {
                 }
 
                 fn compatible(ty: &::sqlx::postgres::PgTypeInfo) -> bool {
-                    ty == &::sqlx::postgres::PgTypeInfo::with_name("user_id") || <&str as ::sqlx::Type<::sqlx::Postgres>>::compatible(ty)
+                    ty == &::sqlx::postgres::PgTypeInfo::with_name(#snake_case_name) || <&str as ::sqlx::Type<::sqlx::Postgres>>::compatible(ty)
                 }
             }
 
