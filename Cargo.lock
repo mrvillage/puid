@@ -649,17 +649,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "inherent"
-version = "1.0.12"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "6c38228f24186d9cc68c729accb4d413be9eaed6ad07ff79e0270d9e56f3de13"
-dependencies = [
- "proc-macro2",
- "quote",
- "syn 2.0.101",
-]
-
-[[package]]
 name = "itoa"
 version = "1.0.15"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -919,19 +908,19 @@ checksum = "94143f37725109f92c262ed2cf5e59bce7498c01bcc1502d7b9afe439a4e9f49"
 
 [[package]]
 name = "sea-query"
-version = "0.32.6"
+version = "1.0.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "64c91783d1514b99754fc6a4079081dcc2c587dadbff65c48c7f62297443536a"
+checksum = "546040c653a705e60ec65ecd3191a809603734bebbc225775916dea9ae409b31"
 dependencies = [
- "inherent",
+ "itoa",
  "sea-query-derive",
 ]
 
 [[package]]
 name = "sea-query-derive"
-version = "0.4.3"
+version = "1.0.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "bae0cbad6ab996955664982739354128c58d16e126114fe88c2a493642502aab"
+checksum = "a0b0f466921cdd3cf4b89d5c3ac2173dba89a873ab395b123a645de181ec7537"
 dependencies = [
  "darling",
  "heck 0.4.1",

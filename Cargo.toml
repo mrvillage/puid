@@ -13,7 +13,7 @@ serde = { version = "1.0.219", optional = true }
 sqlx = { version = "0.9", optional = true, features = ["postgres"] }
 thiserror = "2.0.12"
 puid_macros = { path = "macros", version = "0.1.2" }
-sea-query = { version = "0.32.6", optional = true }
+sea-query = { version = "1.0", optional = true }
 
 [dev-dependencies]
 serde_json = "1.0.140"
